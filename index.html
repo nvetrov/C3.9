@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>C3.9.1</title>
+    <!--
+    Ваш город — Владивосток?
+    Сделайте страницу с одним текстовым полем ввода. В него пользователь
+    вводит название города (например, "Архангельск"), а результат
+    сохраняется в cookie.
+    При последующих входах на страницу вместо
+    текстового поля ввода отображается соответствующая информация о
+    пользователе "Ваш город — Архангельск" и дополнительно ссылка,
+    позволяющая удалить эту информацию (и потом задать новую при
+    следующем посещении ресурса).
+    -->
+<body onload="whatToDo()">
+<div id='form'>
+    <form action="" autocomplete="off" method="GET" name="getCity">
+        <label>
+            <input type="text" style="width:150px; " name="city" placeholder="Ваш город">
+            <input id="save" type="submit" value="Сохранить">
+        </label>
+    </form>
+</div>
+<div id='id_ref'>
+    <a href='' onclick="deleteCookie();">Clear Cookies</a>
+</div>
+<script>
+    // todo
+//  Ваш город — Владивосток?
+//  Сделайте страницу с одним текстовым полем ввода. В него пользователь
+//  вводит название города (например, "Архангельск"), а результат
+//  сохраняется в cookie.  При последующих входах на страницу вместо
+//  текстового поля ввода отображается соответствующая информация опользователе "Ваш город — Архангельск" и дополнительно ссылка,
+//  позволяющая удалить эту информацию (и потом задать новую приследующем посещении ресурса).
+
+    const usedCookieName = 'city';
+
+    function getCookie(c_name) {
+        let matches = document.cookie.match(new RegExp("(?:^|; )" + c_name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    function setCookie(name, value, age = "80") {
+        //console.log('In setCookie')
+        document.cookie = encodeURIComponent(name) + '=' + encodeURIComponent(value) + ';max-age=80';
+        //console.log(document.cookie)
+    }
+
+    function deleteCookie() {
+        setCookie(usedCookieName, "", "-1");
+    }
+
+    function ShowCity() {
+        const val = getCookie(usedCookieName);
+        whatCanhge = document.getElementById('id_ref');
+        whatCanhge.innerHTML = `<p>Ваш город —  ${val}? <br>	${whatCanhge.innerHTML} </p>`;
+
+    }
+
+    function removeElem(form_name) {
+        document.getElementById(form_name).remove();
+    }
+
+    function whatToDo() {
+        //console.log(getCookie(usedCookieName))
+        if (getCookie(usedCookieName)) {
+            //console.log( "usedCookieName True" );
+            removeElem('form');
+            ShowCity();
+        } else {
+            //console.log( "usedCookieName False" );
+            removeElem('id_ref');
+        }
+
+    }
+
+    document.getElementById('save').onclick = function () {
+        // console.log('You press on save');
+        const name = usedCookieName;
+        const value = document.forms.getCity.elements.city.value;
+        //console.log(name, value);
+        setCookie(name, value);
+        // console.log(document.cookie)
+    };
+
+
+</script>
+<!--<script src="main.js"></script>-->
+</body>
+</html>
